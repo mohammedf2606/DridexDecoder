@@ -10,17 +10,6 @@ extension = file_loc.split(".")[-1]
 print(extension)
 
 
-# Filter rows depending on if there is number
-def filter_row(in_row):
-    row_string = str(in_row)
-    row_string = row_string.replace("nan", "").replace(" ", "").replace("\n", "").replace("[", "").replace("]", "")
-    pattern = "^([0-9]+)(.0)?$"
-    is_match = re.match(pattern, row_string)
-    if is_match is None:
-        return None
-    print(is_match)
-
-
 if extension == "xlsb":
     data = pd.read_excel(file_loc, engine="pyxlsb")
 elif extension == "csv":
@@ -30,9 +19,25 @@ elif extension == "xls":
 else:
     data = pd.read_excel(file_loc)
 
-# selection = data.iloc[63:, 0:]
-# print(selection)
-# obsc_data = selection.at[63, 1]
+
+# Filter rows depending on if there is number
+def filter_row(in_row):
+    in_row = in_row[~pd.isna(in_row)]
+    print(in_row)
+
+    # row_string = str(in_row)
+    # row_string = row_string.replace("nan", "").replace("\n", "").replace("[", "").replace("]", "")
+    # split = np.array(row_string.split(" "))
+    # unique_rows = np.unique(split)
+    # without_empty_str = np.delete(unique_rows, np.where(unique_rows == ''))
+    #
+    # pattern = "^'([0-9]+)(.0)?'$"
+    # print(without_empty)
+    # is_match = re.match(pattern, str(without_empty))
+    # if is_match is None:
+    #     return None
+    # print(is_match)
+
 
 np_array = data.values
 rows_with_nums = []
